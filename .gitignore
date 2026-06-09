@@ -1,0 +1,74 @@
+# Dependencies
+node_modules/
+
+# Build output and framework caches
+dist/
+dist-ssr/
+build/
+.next/
+out/
+.output/
+.vinxi/
+.nitro/
+.tanstack/
+.vite/
+coverage/
+
+# Environment and local secrets
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+!.env.example
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+bun-debug.log*
+
+# Package manager / cache artifacts
+.npm/
+.pnpm-store/
+.yarn/
+!.yarn/patches/
+!.yarn/plugins/
+!.yarn/releases/
+!.yarn/sdks/
+!.yarn/versions/
+.bun/
+
+# Deployment and local platform state
+.vercel/
+.netlify/
+.wrangler/
+
+# Editor and OS files
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+.DS_Store
+Thumbs.db
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# AI / tool-specific
+.gemini/
+.lovable/
+.cursor/
+
+# Inngest
+.inngest/
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts

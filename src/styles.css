@@ -1,0 +1,50 @@
+@import "tailwindcss";
+@source "../src";
+
+@theme inline {
+  --color-bg: #FAFAFA;
+  --color-sidebar: #F4F4F4;
+  --color-surface: #FFFFFF;
+  --color-border-soft: #E8E8E8;
+  --color-border-input: #E0E0E0;
+  --color-ink: #1A1A1A;
+  --color-sub: #888888;
+  --color-hint: #BBBBBB;
+  --color-ai-bubble: #F0F0F0;
+  --color-groq-bg: #FFF3E0;
+  --color-groq-fg: #B45309;
+  --color-gemini-bg: #EEF2FF;
+  --color-gemini-fg: #3730A3;
+  --color-danger: #EF4444;
+  --color-success: #22C55E;
+  --font-sans: "Inter", "Inter Fallback", ui-sans-serif, system-ui, sans-serif;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  font-family: "Inter", "Inter Fallback", ui-sans-serif, system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  background: #FAFAFA;
+  color: #1A1A1A;
+  -webkit-font-smoothing: antialiased;
+  font-weight: 400;
+}
+
+* { font-weight: inherit; }
+h1, h2, h3, h4, h5, h6, strong, b { font-weight: 500; }
+
+@keyframes mem-pulse {
+  0%, 80%, 100% { opacity: 0.25; }
+  40% { opacity: 1; }
+}
+.mem-dot { animation: mem-pulse 1.4s infinite ease-in-out; }
+.mem-dot:nth-child(2) { animation-delay: 0.2s; }
+.mem-dot:nth-child(3) { animation-delay: 0.4s; }
+
+.mem-scrollbar::-webkit-scrollbar { width: 8px; height: 8px; }
+.mem-scrollbar::-webkit-scrollbar-thumb { background: #E0E0E0; border-radius: 999px; }
+.mem-scrollbar::-webkit-scrollbar-track { background: transparent; }
