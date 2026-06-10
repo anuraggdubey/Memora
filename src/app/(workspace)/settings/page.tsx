@@ -1,5 +1,8 @@
+import { requireUser } from "@/lib/auth.server";
 import Settings from "../../pages/Settings";
 
-export default function Page() {
+export default async function Page() {
+  await requireUser("/settings");
+
   return <Settings />;
 }

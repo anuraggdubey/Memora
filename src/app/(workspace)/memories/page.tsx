@@ -1,5 +1,8 @@
+import { requireUser } from "@/lib/auth.server";
 import Memories from "../../pages/Memories";
 
-export default function Page() {
+export default async function Page() {
+  await requireUser("/memories");
+
   return <Memories />;
 }

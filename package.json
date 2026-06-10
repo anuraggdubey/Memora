@@ -1,7 +1,9 @@
 {
   "name": "memora",
   "private": true,
-  "sideEffects": false,
+  "sideEffects": [
+    "*.css"
+  ],
   "type": "module",
   "scripts": {
     "dev": "next dev",
@@ -66,6 +68,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.32.0",
+    "@tailwindcss/postcss": "^4.3.0",
     "@types/node": "^22.16.5",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",

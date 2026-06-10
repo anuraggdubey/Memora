@@ -1,5 +1,8 @@
+import { requireUser } from "@/lib/auth.server";
 import Insights from "../../pages/Insights";
 
-export default function Page() {
+export default async function Page() {
+  await requireUser("/insights");
+
   return <Insights />;
 }
