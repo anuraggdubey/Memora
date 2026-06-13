@@ -12,7 +12,13 @@ const CHIPS = [
 
 export default function Home() {
   const router = useRouter();
-  const start = (_text: string) => router.push("/chat/new");
+  const start = (_text: string) => {
+    if (_text.trim()) {
+      router.push(`/chat/new?q=${encodeURIComponent(_text.trim())}`);
+    } else {
+      router.push("/chat/new");
+    }
+  };
 
   return (
     <div className="flex-1 flex flex-col items-center justify-center px-4 pb-4 md:pb-10">

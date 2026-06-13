@@ -3,34 +3,87 @@
 import { useEffect, useRef, useState } from "react";
 import MessageInput from "./MessageInput";
 import MessageBubble, { type ChatMessage } from "./MessageBubble";
+import { useApp } from "./workspace-context";
+import { useSearchParams } from "next/navigation";
 
 export default function Chat({ id }: { id: string }) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [typing, setTyping] = useState(false);
   const scrollerRef = useRef<HTMLDivElement>(null);
+  const searchParams = useSearchParams();
+  const initialQuery = searchParams.get("q");
+  const initRef = useRef(false);
+
+  const { addMemory, memories: explicitMemories } = useApp();
 
   useEffect(() => {
     scrollerRef.current?.scrollTo({ top: scrollerRef.current.scrollHeight, behavior: "smooth" });
   }, [messages, typing]);
+
+  useEffect(() => {
+    if (initialQuery && !initRef.current) {
+      initRef.current = true;
+      // timeout ensures it runs after initial render completes
+      setTimeout(() => send(initialQuery), 0);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialQuery]);
 
   const send = (text: string) => {
     const next: ChatMessage = { id: String(Date.now()), role: "user", text };
     setMessages((m) => [...m, next]);
     setTyping(true);
 
-    // TODO: Replace with actual API call to /api/chat
-    setTimeout(() => {
-      setTyping(false);
-      setMessages((m) => [
-        ...m,
-        {
-          id: String(Date.now() + 1),
-          role: "assistant",
-          model: "groq",
-          text: "This is a placeholder response. Connect the Grok and Gemini APIs to get real AI responses.",
-        },
-      ]);
-    }, 900);
+    // Call real API
+    fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ messages: [...messages, next], memories: explicitMemories }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setTyping(false);
+        if (data.error) {
+          console.error(data.error);
+          setMessages((m) => [
+            ...m,
+            {
+              id: String(Date.now() + 1),
+              role: "assistant",
+              model: "error",
+              text: `Error: ${data.error}`,
+            },
+          ]);
+          return;
+        }
+
+        if (data.extractedMemory) {
+          addMemory(data.extractedMemory);
+        }
+
+        setMessages((m) => [
+          ...m,
+          {
+            id: String(Date.now() + 1),
+            role: "assistant",
+            model: data.model || "groq",
+            text: data.text || "",
+          },
+        ]);
+      })
+      .catch((err) => {
+        setTyping(false);
+        console.error("Chat error:", err);
+        setMessages((m) => [
+          ...m,
+          {
+            id: String(Date.now() + 1),
+            role: "assistant",
+            model: "error",
+            text: "Failed to connect to the chat API. Please check your network or API keys.",
+          },
+        ]);
+      });
   };
 
   return (

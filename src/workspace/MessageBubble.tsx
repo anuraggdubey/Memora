@@ -8,7 +8,7 @@ export type ChatMessage = {
   id: string;
   role: "user" | "assistant";
   text: string;
-  model?: "groq" | "gemini";
+  model?: "groq" | "gemini" | "error" | "system" | string;
 };
 
 export default function MessageBubble({ msg }: { msg: ChatMessage }) {

@@ -60,6 +60,7 @@
     "recharts": "^2.15.4",
     "resend": "^6.12.4",
     "sonner": "^2.0.7",
+    "supermemory": "^4.24.12",
     "tailwind-merge": "^3.5.0",
     "tailwindcss": "^4.2.1",
     "vaul": "^1.1.2",

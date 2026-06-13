@@ -13,6 +13,7 @@ type Ctx = {
   updateDecision: (id: string, status: Decision["status"]) => void;
   togglePin: (id: string) => void;
   deleteMemory: (id: string) => void;
+  addMemory: (memory: Omit<Memory, "id" | "date" | "source">) => void;
 };
 
 const AppContext = createContext<Ctx | null>(null);
@@ -36,6 +37,15 @@ export function AppProvider({ children }: { children: ReactNode }) {
         togglePin: (id) =>
           setMemories((m) => m.map((x) => (x.id === id ? { ...x, pinned: !x.pinned } : x))),
         deleteMemory: (id) => setMemories((m) => m.filter((x) => x.id !== id)),
+        addMemory: (memory) => {
+          const newMemory: Memory = {
+            id: String(Date.now()),
+            date: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
+            source: "Chat",
+            ...memory,
+          };
+          setMemories((m) => [newMemory, ...m]);
+        },
       }}
     >
       {children}
