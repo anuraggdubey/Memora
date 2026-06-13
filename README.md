@@ -6,14 +6,14 @@ Memora is a persistent-memory AI chat platform where conversations are never dis
 
 ## What Makes Memora Different
 
-| Traditional AI Chatbots | Memora |
-|---|---|
-| Forgets everything after session ends | Remembers every conversation permanently |
-| No cross-session learning | Builds a user profile from day one |
-| One global chat feed | Workspaces with isolated memory scopes |
-| No insights or reports | Weekly digest, decisions log, topic heatmaps |
-| Single AI model | Dual-model routing: Grok + Gemini Flash |
-| No memory editing | Full memory audit — view, edit, delete any fact |
+| Traditional AI Chatbots               | Memora                                          |
+| ------------------------------------- | ----------------------------------------------- |
+| Forgets everything after session ends | Remembers every conversation permanently        |
+| No cross-session learning             | Builds a user profile from day one              |
+| One global chat feed                  | Workspaces with isolated memory scopes          |
+| No insights or reports                | Weekly digest, decisions log, topic heatmaps    |
+| Single AI model                       | Dual-model routing: Grok + Gemini Flash         |
+| No memory editing                     | Full memory audit — view, edit, delete any fact |
 
 ## Core Features
 
@@ -28,17 +28,16 @@ Memora is a persistent-memory AI chat platform where conversations are never dis
 
 ## Tech Stack
 
-| Technology | Purpose |
-|---|---|
-| Next.js (App Router) | Frontend framework |
-| TypeScript | Language |
-| Tailwind CSS | Styling |
-| Supabase | PostgreSQL database + pgvector + auth |
-| Grok API | Primary AI — fast responses, simple queries |
-| Google Gemini Flash | Secondary AI — long context, analysis, summaries |
-| pgvector | Vector similarity search for memory retrieval |
-| Inngest | Background jobs — memory extraction, digest generation |
-| Bun | Package manager and runtime |
+| Technology           | Purpose                                          |
+| -------------------- | ------------------------------------------------ |
+| Next.js (App Router) | Frontend framework                               |
+| TypeScript           | Language                                         |
+| Tailwind CSS         | Styling                                          |
+| Supabase             | PostgreSQL database + pgvector + auth            |
+| Grok API             | Primary AI — fast responses, simple queries      |
+| Google Gemini Flash  | Secondary AI — long context, analysis, summaries |
+| pgvector             | Vector similarity search for memory retrieval    |
+| Bun                  | Package manager and runtime                      |
 
 ## Getting Started
 
@@ -52,17 +51,20 @@ Memora is a persistent-memory AI chat platform where conversations are never dis
 ### Setup
 
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/your-username/memora.git
    cd memora
    ```
 
 2. Install dependencies:
+
    ```bash
    bun install
    ```
 
 3. Create your environment file:
+
    ```bash
    cp .env.example .env
    ```
@@ -78,29 +80,50 @@ Memora is a persistent-memory AI chat platform where conversations are never dis
 
 Copy `.env.example` to `.env` and fill in the values:
 
-| Variable | Description |
-|---|---|
-| `GROQ_API_KEY` | Your Grok API key for fast inference |
-| `GOOGLE_GEMINI_API_KEY` | Your Google Gemini Flash API key |
-| `NEXT_PUBLIC_SUPABASE_URL` | Your Supabase project URL |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Your Supabase anonymous/public key |
-| `SUPABASE_SERVICE_ROLE_KEY` | Your Supabase service role key (server-side only) |
-| `INNGEST_EVENT_KEY` | Inngest event key for background jobs |
-| `INNGEST_SIGNING_KEY` | Inngest signing key |
-| `RESEND_API_KEY` | Resend API key for transactional emails |
-| `CRON_SECRET` | Secret for securing cron job endpoints |
+| Variable                        | Description                                       |
+| ------------------------------- | ------------------------------------------------- |
+| `GROQ_API_KEY`                  | Your Grok API key for fast inference              |
+| `GOOGLE_GEMINI_API_KEY`         | Your Google Gemini Flash API key                  |
+| `NEXT_PUBLIC_SUPABASE_URL`      | Your Supabase project URL                         |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Your Supabase anonymous/public key                |
+| `SUPABASE_SERVICE_ROLE_KEY`     | Your Supabase service role key (server-side only) |
+| `RESEND_API_KEY`                | Resend API key for transactional emails           |
+| `CRON_SECRET`                   | Secret for securing cron job endpoints            |
 
 > **Note:** Variables prefixed with `NEXT_PUBLIC_` are exposed to the browser. Never put secrets in `NEXT_PUBLIC_` variables.
 
+### Supabase setup
+
+1. In Supabase, open **SQL Editor**.
+2. Run [`supabase/001_initial_schema.sql`](supabase/001_initial_schema.sql).
+3. In **Authentication > Providers**, enable **Email** for email/password login.
+4. In **Authentication > URL Configuration**, add these redirect URLs:
+   - `http://localhost:3000/auth/callback`
+   - your production URL, for example `https://your-domain.com/auth/callback`
+
+If email confirmations are enabled, new users must click the confirmation email before password login will create a session.
+
+### Cron and Resend
+
+`RESEND_API_KEY` is only needed once weekly digest or transactional email routes are implemented. Create it in Resend, then add it to `.env` locally and to your hosting provider's environment variables.
+
+`CRON_SECRET` should be a long random string, for example:
+
+```bash
+openssl rand -hex 32
+```
+
+Use it as a bearer token or `?secret=` value when adding cron route handlers. This repo does not currently define a cron endpoint, so the secret can stay empty until that feature is added.
+
 ## Scripts
 
-| Command | Description |
-|---|---|
-| `bun run dev` | Start the local Next.js dev server |
-| `bun run build` | Create a production build |
-| `bun run start` | Serve the production build locally |
-| `bun run lint` | Run ESLint |
-| `bun run format` | Format the project with Prettier |
+| Command          | Description                        |
+| ---------------- | ---------------------------------- |
+| `bun run dev`    | Start the local Next.js dev server |
+| `bun run build`  | Create a production build          |
+| `bun run start`  | Serve the production build locally |
+| `bun run lint`   | Run ESLint                         |
+| `bun run format` | Format the project with Prettier   |
 
 ## Project Structure
 
